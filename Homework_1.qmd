@@ -1,0 +1,189 @@
+---
+title: "Homework 1"
+format: pdf
+editor: visual
+---
+
+### Question 1:
+
+Defines variables a=1,b=−1,d=−2 and print out the solutions to $$
+\mathbf{f(x)} = \mathbf{ax^2} + \mathbf{bx} + \mathbf{d} = 0
+$$ Do not report complex solutions, only real numbers. Avoid using the variable name c as it is a reserved function in R. Show the code and the answer.
+
+Solution:
+
+```{r}
+a <- 1
+b <- -1
+f <- -2
+
+# Solve quadratic equation
+solution <- quadratic_eq <- function(a, b, f) {
+  discriminant <- b^2 - 4*a*f
+  if (discriminant >= 0) {
+    root1 <- (-b + sqrt(discriminant)) / (2*a)
+    root2 <- (-b - sqrt(discriminant)) / (2*a)
+    return(c(root1, root2))
+  } else {
+    return(NA)  # No real roots
+  }
+}
+roots <- solution(a, b, f)
+print(roots)
+```
+
+### Question 2:
+
+Show a graph of f(x) versus x for x∈(−3,3). Do not show the code, only the graph.
+
+```{r, echo = FALSE, warning = FALSE}
+
+#Graphically demonstrate solutions
+library(ggplot2)
+
+# Function to calculate f(x) = ax^2 + bx + f
+quadratic_function <- function(x, a, b, f) {
+  return(a*x^2 + b*x + f)
+}
+
+# Generate x values
+x_values <- seq(-3, 3, 0.1)
+
+# Plot the quadratic function
+ggplot(data.frame(x = x_values), aes(x, quadratic_function(x, a, b, f))) +
+  geom_line(aes(y = quadratic_function(x, a, b, f))) +
+  geom_point(alpha = 1) +
+  labs(title = "Graphical Representation of Quadratic Equation Solutions") +
+  xlab("x") +
+  ylab("f(x)")
+```
+
+### Question 3:
+
+Generate PDF report using Render
+
+### Question 4:
+
+Erase the PDF report and reproduce it but this time using a=1,b=2,c=5.
+
+```{r}
+a <- 1
+b <- 2
+f <- 5
+
+# Solve quadratic equation
+solution <- quadratic_eq <- function(a, b, f) {
+  discriminant <- b^2 - 4*a*f
+  if (discriminant >= 0) {
+    root1 <- (-b + sqrt(discriminant)) / (2*a)
+    root2 <- (-b - sqrt(discriminant)) / (2*a)
+    return(c(root1, root2))
+  } else {
+    return(NA)  # No real roots
+  }
+}
+roots <- solution(a, b, f)
+print(roots)
+```
+
+```{r, echo = FALSE}
+# Function to calculate f(x) = ax^2 + bx + f
+quadratic_function <- function(x, a, b, f) {
+  return(a*x^2 + b*x + f)
+}
+
+# Generate x values
+x_values <- seq(-3, 3, 0.1)
+
+# Plot the quadratic function
+ggplot(data.frame(x = x_values), aes(x, quadratic_function(x, a, b, f))) +
+  geom_line(aes(y = quadratic_function(x, a, b, f))) +
+  geom_point(alpha = 1) +
+  labs(title = "Graphical Representation of Quadratic Equation Solutions") +
+  xlab("x") +
+  ylab("f(x)")
+```
+
+### Question 5:
+
+Erase the PDF report and reproduce it but this time using a=1,b=3,c=2. Change the range of x to range that clearly shows the roots.
+
+```{r}
+a <- 1
+b <- 3
+f <- 2
+
+# Solve quadratic equation
+solution <- quadratic_eq <- function(a, b, f) {
+  discriminant <- b^2 - 4*a*f
+  if (discriminant >= 0) {
+    root1 <- (-b + sqrt(discriminant)) / (2*a)
+    root2 <- (-b - sqrt(discriminant)) / (2*a)
+    return(c(root1, root2))
+  } else {
+    return(NA)  # No real roots
+  }
+}
+roots <- solution(a, b, f)
+print(roots)
+```
+
+```{r, echo = FALSE}
+# Function to calculate f(x) = ax^2 + bx + f
+quadratic_function <- function(x, a, b, f) {
+  return(a*x^2 + b*x + f)
+}
+
+# Generate x values
+x_values <- seq(-2, -1, 0.1)
+
+# Plot the quadratic function
+ggplot(data.frame(x = x_values), aes(x, quadratic_function(x, a, b, f))) +
+  geom_line(aes(y = quadratic_function(x, a, b, f))) +
+  geom_point(alpha = 1) +
+  labs(title = "Graphical Representation of Quadratic Equation Solutions") +
+  xlab("x") +
+  ylab("f(x)")
+```
+
+### Question 6:
+
+Create a markdown page with the results for this last set of values, but this time showing the code.
+
+```{r}
+a <- 1
+b <- 3
+f <- 2
+
+# Solve quadratic equation
+solution <- quadratic_eq <- function(a, b, f) {
+  discriminant <- b^2 - 4*a*f
+  if (discriminant >= 0) {
+    root1 <- (-b + sqrt(discriminant)) / (2*a)
+    root2 <- (-b - sqrt(discriminant)) / (2*a)
+    return(c(root1, root2))
+  } else {
+    return(NA)  # No real roots
+  }
+}
+roots <- solution(a, b, f)
+print(roots)
+```
+
+```{r}
+# Function to calculate f(x) = ax^2 + bx + f
+quadratic_function <- function(x, a, b, f) {
+  return(a*x^2 + b*x + f)
+}
+
+# Generate x values
+x_values <- seq(-2, -1, 0.1)
+
+# Plot the quadratic function
+ggplot(data.frame(x = x_values), aes(x, quadratic_function(x, a, b, f))) +
+  geom_line(aes(y = quadratic_function(x, a, b, f))) +
+  geom_point(alpha = 1) +
+  labs(title = "Graphical Representation of Quadratic Equation Solutions") +
+  xlab("x") +
+  ylab("f(x)")
+```
