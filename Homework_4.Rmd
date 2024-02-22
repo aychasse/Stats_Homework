@@ -1,0 +1,131 @@
+#Homework 4
+#Alexandra Chasse
+
+
+#Setup:
+
+```{r}
+
+library(dslabs)
+library(caret)
+if (!exists("mnist")) mnist <- read_mnist()
+set.seed(2024-2-14)
+index <- sample(nrow(mnist$train$images), 10000)
+x <- mnist$train$images[index,]
+y <- factor(mnist$train$labels[index])
+index <- sample(nrow(mnist$test$images), 1000)
+x_test <- mnist$test$images[index,]
+y_test <- factor(mnist$test$labels[index])
+
+```
+
+#Q1: Train a kNN model. Report the error rate on the test data.
+
+```{r}
+x <- as.data.frame(x)
+
+train_knn <- train(x, y, method = "knn", 
+                   data = mnist$train,
+                   tuneGrid = data.frame(k = seq(1,5,9)))
+ggplot(train_knn, highlight = TRUE)
+
+train_knn$bestTune
+train_knn$finalModel
+
+confusionMatrix(predict(train_knn, mnist$test, type = "raw"),
+                y_test)$overall["Accuracy"]
+
+#confusionMatrix(y_hat_knn, y_test)$overall["Accuracy"]
+
+#ctrl <- trainControl(method = "cv", number = 10, p = 0.9)
+
+#train_knn_cv <- train(x, y, method = "knn", 
+ #                     data = mnist$train,
+#                      trControl = ctrl, 
+#                      tuneGrid = data.frame(k = #seq(1,3,5,7,9)))
+
+#ggplot(train_knn_cv, hightlight = TRUE)
+#optimal_k <- model$bestTune$k
+#knn_fit_ok <- knn3(x, y, k = optimal_k)
+#y_hat_knn_ok <- predict(knn_fit_ok, x_test)
+
+#confusionMatrix(y_hat_knn_ok, y_test)
+```
+
+
+```{r}
+n(x[ ,col_index], y,
+  method = "knn",
+  tuneGrid = data.frame(k = seq(1,3,5,7,9)))
+fit_knn <- knn3(x[, col_index], y, k = y_hat_knn$bestTune)
+
+y_hat_knn <- predict(fit_knn, x_test[, col_idex], type = "class")
+con_max <- confusionMatrix(y_hat_knn, factor(y_test))$overall["Accuracy"]
+
+error_rate <- 1 - con_max$overall['Accuracy']
+
+```
+
+#Q2: Train a Random Forest model. Report the error rate on the test data only after you decide on a model.
+
+```{r}
+library(randomForest)
+col_index <- setdiff(1:ncol(x), nearZeroVar(x))
+length(col_index)
+x <- as.data.frame(x)
+
+rf_grid <- expand.grid(mtry = c(5, 10, 15),
+                       splitrule = c("gini", "extratrees"),
+                       min.node.size = c(1, 5, 10))
+
+ctrl <- trainControl(method = "cv", number = 10, p = 0.9)
+
+rf_model <- train(x, y, data = mnist$train, method = "rf",
+                  trControl = ctrl, tuneGride = rf_grid)
+
+pred <- predict(rf_model, x_test)
+
+conf_matrix <- confusionMatrix(pred, y_test)
+
+1 - conf_matrix$overall['Accuracy']
+
+```
+
+#Q3: Train a model of your choosing. Report the error rate on the test data only after you decide on a model.
+
+```{r}
+lr_grid <- expand.grid()
+ctrl <- trainControl(method = "cv", number = 5)
+
+lr_model <- train(x, y, data = mnist$train, 
+                  method = "multinom",
+                  trControl = ctrl, 
+                  tuneGrid = lr_grid)
+
+predictions <- predict(lr_model, x_test)
+
+conf_matrix_lr <- confusionMatrix(predictions, y_test)
+
+1 - conf_matrix$overall['Accuracy']
+
+```
+
+#Q4: Build an ensemble with the three methods. Feel free to add more if you want. Report the error rate on the test data only after you build your esnamble.
+
+```{r}
+library(caretEnsemble)
+
+models <- list(knn = y_hat_knn, rf = rf_model, lr = lr_model)
+ensemble <- caretList(models)
+
+ensemble_pred <- predict(ensemble, mnist$test)
+conf_matrix_ensemble <- confusionMatrix(ensemble_pred, y_test)
+
+error_rate <- 1 - conf_matrix_ensemble$overall['Accuracy']
+```
+
+
+
+
+
+
